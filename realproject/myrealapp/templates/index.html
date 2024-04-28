@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% load static %} {% block title %} Rent Cars {%
+endblock title %} {% endblock %} {% block css %} {% endblock %} {% block body %}
+<div class="container mt-4">
+  <div>
+    {% comment %}
+    <h1 class="display-4">Fast Cars</h1>
+    {% endcomment %} {% comment %}
+    <p class="lead">
+      You can select from the wide range of Cars available. <br />
+      We have different vehicles available like sedans, SUVs, BMW, trucks,
+      luxury cars
+    </p>
+    {% endcomment %}
+
+    <h2 class="display-4">Welcome to Fast Cars</h2>
+
+    <p class="lead">
+      Welcome to <strong>Fast Cars</strong>, your premier car rental
+      destination. We offer a wide range of vehicles to suit your needs, from
+      compact sedans to spacious SUVs and luxury cars. Our fleet is
+      well-maintained, and our friendly staff is dedicated to providing
+      exceptional customer service.
+    </p>
+
+    <p class="lead">
+      Whether you're in town for business or pleasure, we have the perfect
+      vehicle for you. Our rental periods are flexible, and we offer competitive
+      pricing to fit your budget. We also offer additional services such as GPS
+      navigation and child seats to make your rental experience convenient and
+      stress-free.
+    </p>
+
+    <p class="lead">
+      Browse our selection today and book your dream car for your next
+      adventure. <a href="/contact_us/">Contact us</a> for more information or
+      to reserve your vehicle.
+    </p>
+
+    <hr class="my-4" />
+  </div>
+
+  <h2 class="display-3">Our Cars:</h2>
+
+  <hr class="my-4" />
+
+  <div class="row mt-4">
+    {% for car in cars %}
+    <div class="col-sm-4 mt-4">
+      <div class="card" style="width: 20rem; height: 24rem">
+        <img
+          class="card-img-top"
+          src="/media/{{car.image}}"
+          alt="Card image cap"
+          height="260px"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Car Name: {{car.name}}</h5>
+          <h6 class="card-text">Car Dealer: <b>{{car.car_dealer}}</b></h6>
+          <p class="card-text">Rent: ${{car.rent}} per day</p>
+          <a href="/customer_login/" class="btn btn-primary">Login to Rent </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <hr class="my-4" />
+  <h2 class="display-3">What Our Clients Says:</h2>
+  <hr class="my-4" />
+  <div class="row mt-4">
+    {% for testimonial in testimonials %}
+    <div class="col-sm-4 mt-4">
+      <div class="card" style="width: 20rem; height: 24rem">
+        <img
+          class="card-img-top"
+          src="/media/{{ testimonial.image }}"
+          alt="Card image cap"
+          height="260px"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Client Name: {{ testimonial.name }}</h5>
+          <h6 class="card-text">Message: <b>{{ testimonial.message }}</b></h6>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <hr class="my-4" />
+</div>
+
+{% endblock %}
