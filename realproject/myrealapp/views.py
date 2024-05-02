@@ -138,6 +138,8 @@ def car_dealer_signup(request):
         return render(request, "car_dealer_login.html")
     return render(request, "car_dealer_signup.html")
 
+
+
 def car_dealer_login(request):
     if request.user.is_authenticated:
         return redirect("/")
@@ -156,6 +158,9 @@ def car_dealer_login(request):
                     alert = True
                     return render(request, "car_dealer_login.html", {"alert":alert})
     return render(request, "car_dealer_login.html")
+
+
+
 
 def signout(request):
     logout(request)
