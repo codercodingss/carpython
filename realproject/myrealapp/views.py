@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from . models import *
 from django.contrib.auth import authenticate, login, logout
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 def index(request):
@@ -109,33 +110,38 @@ def car_dealer_signup(request):
         return redirect("/")
     
     if request.method == "POST":
-        username = request.POST['username']
-        email = request.POST['email']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        city = request.POST['city']
-
-        if password1 != password2:
-            return redirect('/car_dealer_signup')
-
-        user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password1)
-        user.save()
-        
         try:
-            location = Location.objects.get(city = city.lower())
-        except:
-            location = None
-        if location is not None:
-            car_dealer = CarDealer(car_dealer=user,  location=location, type="Car Dealer")
-        else:
-            location = Location(city = city.lower())
-            location.save()
-            location = Location.objects.get(city = city.lower())
-            car_dealer = CarDealer(car_dealer = user,  location=location, type="Car Dealer")
-        car_dealer.save()
-        return render(request, "car_dealer_login.html")
+            username = request.POST['username']
+            email = request.POST['email']  # Add a try-except block to handle MultiValueDictKeyError
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            city = request.POST['city']
+
+            if password1 != password2:
+                return redirect('/car_dealer_signup')
+
+            user = User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password1)
+            user.save()
+            
+            try:
+                location = Location.objects.get(city=city.lower())
+            except:
+                location = None
+            if location is not None:
+                car_dealer = CarDealer(car_dealer=user,  location=location, type="Car Dealer")
+            else:
+                location = Location(city=city.lower())
+                location.save()
+                location = Location.objects.get(city=city.lower())
+                car_dealer = CarDealer(car_dealer=user,  location=location, type="Car Dealer")
+            car_dealer.save()
+            return render(request, "car_dealer_login.html")
+        except MultiValueDictKeyError:
+            # Redirect to the signup page again if 'email' is missing in the POST data
+            return redirect('/all_cars')
+    
     return render(request, "car_dealer_signup.html")
 
 
